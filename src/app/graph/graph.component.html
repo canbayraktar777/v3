@@ -1,0 +1,120 @@
+<!-- Vertex Nodes -->
+<div class="graph-vertex" #vertexN *ngFor="let vertex of _ui.vertex">
+	<button class="btn btn-primary rounded-circle"
+			[ngClass]="{'btn-success': selectedVertex._id === vertex._id}"
+			data-toggle="dropdown"
+			(click)="vertexClick(vertex)">
+		<small *ngIf="euler.path[euler.index]===vertex._id" class="fa fa-bullseye bg-danger"></small>
+		<i class="fa fa-cube vertex-cube"></i>
+		<small class="badge badge-success">{{vertex.distance}}</small>
+	</button>
+	<div class="dropdown-menu">
+		<a class="dropdown-item bg-info">{{vertex.name}}</a>
+		<a class="dropdown-item bg-danger" (click)="deleteVertex(vertex)">
+			<i class="fa fa-warning"></i>Delete
+		</a>
+		<a class="dropdown-item bg-success" (click)="moveVertex(vertex)">
+			<i class="fa fa-arrows"></i>Move
+		</a>
+		<a class="dropdown-item" (click)="connectVertex(vertex)">
+			<i class="fa fa-exchange"></i>Connect
+		</a>
+	</div>
+</div>
+
+<!-- Edge Nodes -->
+<div class="graph-edge" #edgeN *ngFor="let edge of _ui.edge">
+	<button class="badge badge-info"
+			data-toggle="dropdown">
+			{{edge.weight}}
+	</button>
+	<div class="dropdown-menu">
+		<a class="dropdown-item">
+			<input type="number" [(ngModel)]="edge.w" class="form-control"/>
+			<div class="btn-group ">
+				<button type="button" class="btn btn-info" (click)="updateEdge(edge, true)">
+					Auto
+				</button>
+				<button type="button" class="btn btn-success" (click)="updateEdge(edge)">
+					<i class="fa fa-check"></i>
+				</button>
+			</div>
+		</a>
+		<a class="dropdown-item bg-danger" (click)="deleteEdge(edge)">Delete</a>
+	</div>
+</div>
+
+<!-- Canvas -->
+<canvas #canvas (click)="canvasClicked($event)"></canvas>
+
+<!-- Left Menu -->
+<div class="col-md-3 col-xs-1 p-l-0 p-r-0 in" id="sidebar">
+    <div class="list-group panel">
+		<a href="#menuMouseAction" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false">
+			<i class="fa fa-mouse-pointer"></i> |
+
+			<i class="{{mouse.currentAction.icon}}"></i>
+			<span class="hidden-sm-down">{{mouse.currentAction.label}}</span>
+		</a>
+		<div class="collapse in" id="menuMouseAction">
+			<a 	class="list-group-item"
+				data-parent="#menuMouseAction"
+				*ngFor="let action of mouse.actions"
+				(click)="setMouseAction(action)">
+
+				<i class="{{action.icon}}"></i>
+				<span class="label">{{action.label}}</span>
+			</a>
+		</div>
+
+		<a class="list-group-item collapsed" data-parent="#sidebar">
+			<i class="fa fa-bullseye bg-danger" (click)="eulerPath()"></i>
+			<span class="hidden-sm-down" (click)="eulerPath()">Euler Path</span>
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary" (click)="eulerPrevious()">
+					<i class="fa fa-angle-left"></i>
+				</button>
+				<button type="button" class="btn btn-primary" (click)="eulerNext()">
+					<i class="fa fa-angle-right"></i>
+				</button>
+			</div>
+		</a>
+
+		<a href="#graphs" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false">
+			{{selectedGraph.name}}
+		</a>
+		<div class="collapse in" id="graphs">
+			<a 	class="list-group-item" data-parent="#graphs"
+				*ngFor="let graph of _ui.graphs" (click)="setGraph(graph._id)">
+				{{graph.name}}
+				<!-- deleteGraph button (disabled)
+				<button type="button" class="btn btn-danger btn-sm" (click)="deleteGraph(graph)">x</button>-->
+			</a>
+			<a href="#addGraph"	class="list-group-item" data-parent="#graphs" data-toggle="collapse" aria-expanded="false">
+				<i class="fa fa-plus"></i>
+				Add New
+			</a>
+			<div class="collapse in" id="addGraph">
+				<a class="list-group-item">
+					<input type="text" class="form-control"
+							placeholder="name" [(ngModel)]="newGraph.name" />
+				</a>
+				<a class="list-group-item">
+					<div class="input-group">
+						<span class="input-group-addon">Directed</span>
+						<span class="input-group-addon">
+							<input type="checkbox" [(ngModel)]="newGraph.directed"/>
+						</span>
+						<span class="input-group-btn">
+							<button type="button"
+									class="btn btn-primary"
+									(click)="addGraph(newGraph)">
+								<i class="fa fa-check"></i>
+							</button>
+						</span>
+					</div>
+				</a>
+			</div>
+		</div>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="input-group">
+
+			<!-- Data Dropdown Menu -->
+			<div class="input-group-btn">
+
+				<!-- Data button -->
+		        <button 	class="btn btn-primary dropdown-toggle"
+							type="button"
+							data-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false">
+
+					Data
+
+		        </button>
+				<!-- -->
+
+				<div 		class="dropdown-menu"
+							aria-labelledby="dropdownMenuLink">
+
+					<a 		class="dropdown-item">
+
+
+							<!-- Add new data button -->
+							<button 	class="btn btn-primary"
+										(click)="addNewData()"
+										type="button">
+
+								<!-- Plus Sign -->
+								<i class="fa fa-plus"></i>
+								<!-- -->
+
+					        </button>
+							<!-- -->
+					</a>
+
+					<a 		(click)="selectData(data)"
+							*ngFor="let data of allData"
+							class="dropdown-item"
+							href="#">
+
+						{{ data.type }} | {{ data.elements }}
+
+					</a>
+
+			  	</div>
+
+			</div>
+			<!-- -->
+
+			<!-- Data type input -->
+			<input 	#input
+					class="data-type-input form-control"
+					(keyup)="updateData(selectedData)"
+					[(ngModel)]="selectedData.type"
+					type="text">
+			<!-- -->
+
+			<!-- Data Elements -->
+			<span 	#dataElement
+					*ngFor="let el of selectedData.elements;  let idx = index"
+					class="input-group-addon"
+					(click)="dataElementClicked(idx, el)">
+
+					<button *ngIf="selectedElement.index !== idx"
+							class="btn btn-secondary"
+							type="button">
+
+					{{idx}} | {{el.value}}
+					</button>
+
+					<input 	#selectedElementInput
+							*ngIf="selectedElement.index === idx"
+							class="form-control"
+							type = "text"
+					 		[(ngModel)]= "el.value" />
+							{{ el.value}}
+
+			</span>
+			<!-- -->
+
+			<!-- Add New Element Button -->
+			<span 	(click)="addNewElement(selectedData)"
+					class="input-group-addon">
+
+				<!-- Plus Sign -->
+				<i class="fa fa-plus"></i>
+				<!-- -->
+
+			</span>
+			<!-- -->
+		</div>
+	</div>
+</div>
+<p *ngFor="let data of allData">
+    {{data._id}}
+    {{data.type}}
+    {{data.elements}}
+</p>

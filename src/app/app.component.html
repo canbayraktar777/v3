@@ -1,3 +1,20 @@
-<h1>
-  {{title}}
-</h1>
+<!--
+<nav class="navbar navbar-toggleable-md bg-faded">
+
+	<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+
+	<div class="collapse navbar-collapse" id="navbarNav">
+		<ul class="navbar-nav">
+			<li *ngFor="let algorithm of algorithms" class="nav-item">
+				<a routerLink="{{algorithm}}" routerLinkActive="active" class="nav-link">
+					{{algorithm}}
+				</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+-->
+<router-outlet></router-outlet>
